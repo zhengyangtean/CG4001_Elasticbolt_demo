@@ -16,7 +16,6 @@ public class VaryingNumKeySprout extends BaseRichSpout {
     private String[] words;
     private Random rand;
     int count;
-    Long startTime = System.currentTimeMillis();
 
     public VaryingNumKeySprout() {
     }

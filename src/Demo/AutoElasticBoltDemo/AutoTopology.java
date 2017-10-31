@@ -18,7 +18,7 @@ public class AutoTopology {
         if (args.length != 1) {
             throw new RuntimeException("Please specify the name of the topology");
         }
-        
+
         int parallelism = 1;
         int numThreads = 4;
 
