@@ -1,7 +1,7 @@
 package Demo.AutoElasticBoltDemo;
 
 import Demo.FinalBolt;
-import Demo.varyingNumKeySprout;
+import Demo.VaryingNumKeySprout;
 import com.twitter.heron.api.Config;
 import com.twitter.heron.api.HeronSubmitter;
 import com.twitter.heron.api.topology.TopologyBuilder;
@@ -19,13 +19,14 @@ public class AutoTopology {
             throw new RuntimeException("Please specify the name of the topology");
         }
 
+
         int parallelism = 1;
         int numThreads = 4;
 
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("word", new varyingNumKeySprout(), 2);
+        builder.setSpout("word", new VaryingNumKeySprout(), 2);
         // (name, elastic bolt instance, number of cores used, debug, sleepDuration, batches to aggregate)
-        builder.setBolt("exclaim1", new AutoElasticExclaimationBolt(true), parallelism, numThreads, true, 1, 5)
+        builder.setBolt("exclaim1", new AutoElasticExclaimationBolt(true), parallelism, numThreads, true, 1)
                 .fieldsGrouping("word", new Fields("word"));
         builder.setBolt("final", new FinalBolt(false), 1)
                 .fieldsGrouping("exclaim1", new Fields("word"));

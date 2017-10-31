@@ -10,7 +10,7 @@ import com.twitter.heron.api.utils.Utils;
 import java.util.Map;
 import java.util.Random;
 
-public class varyingNumKeySprout extends BaseRichSpout {
+public class VaryingNumKeySprout extends BaseRichSpout {
     private static final long serialVersionUID = -5972291205871728684L;
     private SpoutOutputCollector collector;
     private String[] words;
@@ -18,7 +18,7 @@ public class varyingNumKeySprout extends BaseRichSpout {
     int count;
     Long startTime = System.currentTimeMillis();
 
-    public varyingNumKeySprout() {
+    public VaryingNumKeySprout() {
     }
 
     @SuppressWarnings("rawtypes")
