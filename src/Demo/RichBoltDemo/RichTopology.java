@@ -42,4 +42,3 @@ public class RichTopology {
         HeronSubmitter.submitTopology(args[0], conf, builder.createTopology());
     }
 }
-}
