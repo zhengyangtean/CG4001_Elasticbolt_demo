@@ -27,7 +27,7 @@ public class SentimentalTopology {
                 new TweetSprout(new String[]{"trump", "potus", "realDonaldTrump"}), 1);
         builder.setBolt("sentimental", new SentimentalElasticBolt(true),  parallelism, numThreads, true, 1)
                 .fieldsGrouping("tweetStreamSprout", new Fields("Author", "Tweet", "SearchKey"));
-        builder.setBolt("exclaim", new PostgreSQLRichBolt(), 1)
+        builder.setBolt("database", new PostgreSQLRichBolt(), 1)
                 .fieldsGrouping("sentimental", new Fields("Author", "Sentiment", "SearchKey" ));
         Config conf = new Config();
         conf.setDebug(true);
