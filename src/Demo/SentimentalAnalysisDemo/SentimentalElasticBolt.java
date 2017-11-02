@@ -2,7 +2,6 @@ package Demo.SentimentalAnalysisDemo;
 
 import com.twitter.heron.api.bolt.BaseElasticBolt;
 import com.twitter.heron.api.bolt.OutputCollector;
-import com.twitter.heron.api.bolt.TwitchyElasticBolt;
 import com.twitter.heron.api.metric.GlobalMetrics;
 import com.twitter.heron.api.topology.OutputFieldsDeclarer;
 import com.twitter.heron.api.topology.TopologyContext;
@@ -69,10 +68,20 @@ public class SentimentalElasticBolt extends BaseElasticBolt {
                     }
                 }
             }
+            GlobalMetrics.incr("selected_items");
             nItems.getAndIncrement();
             long latency = System.currentTimeMillis() - startTime;
-            System.out.println(nItems.get() + " tuples in " + latency + " ms " + "num:" + getNumCore() + "^" + getMaxCore());
-            GlobalMetrics.incr("selected_items");
+            // usages of ElasticBolt's builtin state
+            int weightedAverage = getState(tuple.getString(0), -1); // -1 to indicate that recorded sentiment for user
+            if (weightedAverage == -1){
+                putState(tuple.getString(0),mainSentiment);
+            } else { // if there is an weighted average recorded before
+                putState(tuple.getString(0), (int)Math.ceil((mainSentiment + weightedAverage) / 2.0)); // update new weighted avg
+            }
+            System.out.println("Handle :: " + tuple.getString(0) + ", currentSentiment :: "
+                    + Integer.toString(mainSentiment) + ", avgSentiment :: " + getState(tuple.getString(0)) + ", "
+                    + nItems.get() + " tuples in " + latency + " ms " + "num:" + getNumCore() + "^" + getMaxCore());
+
             if (emit) {
                 emitTuple(tuple, new Values(tuple.getString(0), Integer.toString(mainSentiment), tuple.getString(2)));
             }

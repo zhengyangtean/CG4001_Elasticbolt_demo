@@ -48,7 +48,7 @@ public class PostgreSQLRichBolt extends BaseRichBolt {
             Statement stmt;
             nItems.getAndIncrement();
             long latency = System.currentTimeMillis() - startTime;
-            System.out.println(nItems.get() + " tuples in " + latency + " ms " + "num:");
+            System.out.println(nItems.get() + " tuples in " + latency + " ms ");
             stmt = c.createStatement();
             String sql = "INSERT INTO twittersentiment (twitter_handle,key,sentimentscore,timestamp) "
                     + "VALUES ('" + tuple.getString(0) + "', '"
