@@ -1,4 +1,4 @@
-package Demo;
+package Demo.RichBoltDemo;
 
 import com.twitter.heron.api.bolt.BaseRichBolt;
 import com.twitter.heron.api.bolt.OutputCollector;
@@ -13,15 +13,18 @@ import com.twitter.heron.api.utils.Utils;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FinalBolt extends BaseRichBolt {
-    private static final long serialVersionUID = -3226618846531432832L;
+/**
+ * Created by zhengyang on 2/11/17.
+ */
+public class RichBolt extends BaseRichBolt {
+    private static final long serialVersionUID = -6831313649469885959L;
     private OutputCollector collector;
     private long startTime;
     private boolean emit;
     private AtomicInteger nItems;
 
 
-    public FinalBolt(boolean emit) {
+    public RichBolt(boolean emit) {
         this.emit = emit;
     }
 
@@ -40,7 +43,7 @@ public class FinalBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         try {
             nItems.getAndIncrement();
-            Utils.sleep(1);
+            Utils.sleep(10);
             long latency = System.currentTimeMillis() - startTime;
             System.out.println(tuple.getString(0) + " :: " + nItems.get() + " tuples in " + latency + " ms ");
             GlobalMetrics.incr("selected_items");
